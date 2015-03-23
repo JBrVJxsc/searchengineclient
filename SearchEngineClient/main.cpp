@@ -25,24 +25,14 @@ int main(int argc, char** argv)
     TCPConnector* connector = new TCPConnector();
     TCPStream* stream = connector->connect(ip, port);
     if (stream) {
-        message = "Is there life on Mars?";
+        message = "UPDATE(or QUERY) + DATA"; // 可以在这里用打头字母指示即将要让服务器进行的操作，后面接着被操作的DATA。
         stream->send(message.c_str(), message.size());
         printf("sent - %s\n", message.c_str());
-        len = stream->receive(line, sizeof(line));
+        len = stream->receive(line, sizeof(line)); // 可以在这里接受服务器返回的信息，例如错误信息等。
         line[len] = NULL;
         printf("received - %s\n", line);
         delete stream;
     }
     
-    stream = connector->connect(ip, port);
-    if (stream) {
-        message = "Why is there air?";
-        stream->send(message.c_str(), message.size());
-        printf("sent - %s\n", message.c_str());
-        len = stream->receive(line, sizeof(line));
-        line[len] = NULL;
-        printf("received - %s\n", line);
-        delete stream;
-    }
     exit(0);
 }
