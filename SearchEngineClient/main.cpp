@@ -15,16 +15,16 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    if (argc != 3) {
-        printf("usage: %s <port> <ip>\n", argv[0]);
-        exit(1);
-    }
-    
     int len;
     string message;
     char line[256];
+    
+    // 此处用localhost与9999端口测试。
+    char ip[] = "localhost";
+    char port[] = "9999";
+    
     TCPConnector* connector = new TCPConnector();
-    TCPStream* stream = connector->connect(argv[2], atoi(argv[1]));
+    TCPStream* stream = connector->connect(ip, atoi(port));
     if (stream) {
         message = "Is there life on Mars?";
         stream->send(message.c_str(), message.size());
@@ -35,7 +35,7 @@ int main(int argc, char** argv)
         delete stream;
     }
     
-    stream = connector->connect(argv[2], atoi(argv[1]));
+    stream = connector->connect(ip, atoi(port));
     if (stream) {
         message = "Why is there air?";
         stream->send(message.c_str(), message.size());
