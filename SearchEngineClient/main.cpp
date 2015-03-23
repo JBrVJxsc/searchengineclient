@@ -15,9 +15,7 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    int len;
-    string message;
-    char line[256];
+    char result[256]; // 视情况，可调整该缓存大小。
     
     char ip[] = "localhost"; // IP地址。
     int port = 9999; // 端口号。
@@ -25,12 +23,13 @@ int main(int argc, char** argv)
     TCPConnector* connector = new TCPConnector();
     TCPStream* stream = connector->connect(ip, port);
     if (stream) {
-        message = "UPDATE(or QUERY) + DATA"; // 可以在这里用打头字母指示即将要让服务器进行的操作，后面接着被操作的DATA。
-        stream->send(message.c_str(), message.size());
-        printf("sent - %s\n", message.c_str());
-        len = stream->receive(line, sizeof(line)); // 可以在这里接受服务器返回的信息，例如错误信息等。
-        line[len] = NULL;
-        printf("received - %s\n", line);
+        string message = "UPDATE(or QUERY) + DATA"; // 在此处用打头字母指示即将要让服务器进行的操作，既“更新”或“查询”；后面接着被操作的DATA。
+        stream->send(message.c_str(), message.size()); // 发送数据给服务器。
+        int len = stream->receive(result, sizeof(result)); // 在此处接受服务器返回的信息，例如错误信息（更新）或结果（查询）等。
+        result[len] = NULL;
+        // 在此处处理result，例如显示错误信息或者显示结果等。
+        // Do something here.
+        printf("RESULT: %s\n", result);
         delete stream;
     }
     
